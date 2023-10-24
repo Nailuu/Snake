@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "../include/render.h"
+#include "../include/texture.h"
 
 #define WIDTH 500 
 #define HEIGHT 500
@@ -24,75 +25,81 @@ int main(int argc, char** argv){
     if(init(&window, &renderer, WIDTH, HEIGHT) != 0)
         goto Quit;
 
-    if(setWindowColor(renderer, purple) != 0)
-        goto Quit;
+    setIcon(window, getIcon("./sprite/icon.bmp"));
 
-    SDL_SetRenderDrawColor(renderer, blue.r, blue.g, blue.b, blue.a);
+    // if(setWindowColor(renderer, purple) != 0)
+    //     goto Quit;
+
+    // SDL_SetRenderDrawColor(renderer, blue.r, blue.g, blue.b, blue.a);
 
     while(!quit)
     {
+        if(renderTileBackground(renderer, WIDTH, HEIGHT) != 0)
+            goto Quit;
+
         // Listen to events
         SDL_WaitEventTimeout(&event, 250);
         if(event.type == SDL_QUIT)
         {
             quit = SDL_TRUE;
             goto Quit;
-        } else if(event.type == SDL_KEYDOWN)
-        {
-            if(event.key.keysym.sym == SDLK_z)
-            {
-                direction = 0;
-                // if(cube.y != 0)
-                // {
-                //     cube.y -= 10;
-                // }
-            }
-            if(event.key.keysym.sym == SDLK_s)
-            {
-                direction = 1;
-                // if(cube.y != (HEIGHT - cube.h))
-                // {
-                //     cube.y += 10;
-                // }
-            }
-            if(event.key.keysym.sym == SDLK_q)
-            {
-                direction = 3;
-                // if(cube.x != 0)
-                // {
-                //     cube.x -= 10;
-                // }
-            }
-            if(event.key.keysym.sym == SDLK_d)
-            {
-                direction = 2;
-                // if(cube.x != (WIDTH - cube.w))
-                // {
-                //     cube.x += 10;
-                // }
-            }
-        }
-        switch(direction)
-        {
-            case 0:
-                cube.y -= 50;
-                break;
-            case 1:
-                cube.y += 50;
-                break;
-            case 2:
-                cube.x += 50;
-                break;
-            case 3:
-                cube.x -= 50;
-                break;
-        }
-        SDL_Delay(250);
+        } 
+        // else if(event.type == SDL_KEYDOWN)
+        // {
+        //     if(event.key.keysym.sym == SDLK_z)
+        //     {
+        //         direction = 0;
+        //         // if(cube.y != 0)
+        //         // {
+        //         //     cube.y -= 10;
+        //         // }
+        //     }
+        //     if(event.key.keysym.sym == SDLK_s)
+        //     {
+        //         direction = 1;
+        //         // if(cube.y != (HEIGHT - cube.h))
+        //         // {
+        //         //     cube.y += 10;
+        //         // }
+        //     }
+        //     if(event.key.keysym.sym == SDLK_q)
+        //     {
+        //         direction = 3;
+        //         // if(cube.x != 0)
+        //         // {
+        //         //     cube.x -= 10;
+        //         // }
+        //     }
+        //     if(event.key.keysym.sym == SDLK_d)
+        //     {
+        //         direction = 2;
+        //         // if(cube.x != (WIDTH - cube.w))
+        //         // {
+        //         //     cube.x += 10;
+        //         // }
+        //     }
+        // }
+        // switch(direction)
+        // {
+        //     case 0:
+        //         cube.y -= 50;
+        //         break;
+        //     case 1:
+        //         cube.y += 50;
+        //         break;
+        //     case 2:
+        //         cube.x += 50;
+        //         break;
+        //     case 3:
+        //         cube.x -= 50;
+        //         break;
+        // }
+        // SDL_Delay(250);
 
         // Render
-        setWindowColor(renderer, purple);
-        SDL_SetRenderDrawColor(renderer, blue.r, blue.g, blue.b, blue.a);
-        SDL_RenderFillRect(renderer, &cube);
+        // setWindowColor(renderer, purple);
+        // SDL_SetRenderDrawColor(renderer, blue.r, blue.g, blue.b, blue.a);
+        // SDL_RenderFillRect(renderer, &cube);
         SDL_RenderPresent(renderer);
     }
     
