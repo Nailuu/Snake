@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Nailu/OneDrive/dev/C/Snake",
-      "program": "c:/Users/Nailu/OneDrive/dev/C/Snake/build/Debug/outDebug",
+      "cwd": "c:/Users/Nailu/OneDrive/dev/C/Snake/src",
+      "program": "c:/Users/Nailu/OneDrive/dev/C/Snake/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
