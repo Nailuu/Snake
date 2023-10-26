@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "../include/render.h"
 #include "../include/texture.h"
+#include "../include/snake.h"
 
 #define WIDTH 500 
 #define HEIGHT 500
@@ -22,10 +23,24 @@ int main(int argc, char** argv){
     // 0 = NORTH, 1 = SOUTH, 2 = EAST, 3 = WEST
     int direction = 1;
 
-    if(init(&window, &renderer, WIDTH, HEIGHT) != 0)
+    if(initWindow(&window, &renderer, WIDTH, HEIGHT) != 0)
         goto Quit;
 
-    setIcon(window, getIcon("./sprite/icon.bmp"));
+    Snake *snake = initSnake();
+    if(growSnake(snake) != 0)
+        goto Quit;
+
+    if(growSnake(snake) != 0)
+        goto Quit;
+
+    if(growSnake(snake) != 0)
+        goto Quit;
+
+    destroySnake(snake);
+
+    setIcon(window, getIcon("./sprite/icon2.bmp"));
+
+    SDL_Texture *bgTexture = loadSprite("./sprite/tile.bmp", renderer);
 
     // if(setWindowColor(renderer, purple) != 0)
     //     goto Quit;
@@ -34,13 +49,14 @@ int main(int argc, char** argv){
 
     while(!quit)
     {
-        if(renderTileBackground(renderer, WIDTH, HEIGHT) != 0)
+        if(renderTileBackground(renderer, bgTexture, WIDTH, HEIGHT) != 0)
             goto Quit;
 
         // Listen to events
         SDL_WaitEventTimeout(&event, 250);
         if(event.type == SDL_QUIT)
         {
+            printf("Closed after Quit Event");
             quit = SDL_TRUE;
             goto Quit;
         } 
@@ -105,6 +121,8 @@ int main(int argc, char** argv){
     
 
     Quit:
+    if(snake != NULL)
+        destroySnake(snake);
     if(texture != NULL)
         SDL_DestroyTexture(texture);
     if(renderer != NULL)

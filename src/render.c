@@ -4,7 +4,7 @@
 #include "../include/render.h"
 #include "../include/texture.h"
 
-int init(SDL_Window **window, SDL_Renderer **renderer, int width, int height)
+int initWindow(SDL_Window **window, SDL_Renderer **renderer, int width, int height)
 {
     if(SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -43,10 +43,8 @@ int setWindowColor(SDL_Renderer *renderer, SDL_Color color)
     return 0;
 }
 
-int renderTileBackground(SDL_Renderer *renderer, int width, int height)
+int renderTileBackground(SDL_Renderer *renderer, SDL_Texture *texture, int width, int height)
 {
-    SDL_Texture *texture = NULL;
-    texture = loadSprite("./sprite/tile.bmp", renderer);
     if(texture == NULL)
     {
         return -1;
@@ -67,6 +65,5 @@ int renderTileBackground(SDL_Renderer *renderer, int width, int height)
         }
     }
 
-    SDL_DestroyTexture(texture);
     SDL_SetRenderTarget(renderer, NULL);
 }
