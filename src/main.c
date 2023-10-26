@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "../include/snake.h"
+#include "../include/apple.h"
 #include "../include/render.h"
 #include "../include/texture.h"
 
@@ -21,17 +22,16 @@ int main(int argc, char** argv){
     setIcon(window, getIcon("./sprite/icon2.bmp"));
 
     Snake *snake = initSnake();
-    growSnake(snake);
-    growSnake(snake);
-    growSnake(snake);
-    growSnake(snake);
+    Apple *apple = initApple(WIDTH, HEIGHT);
 
     SDL_Texture *bgTexture = loadSprite("./sprite/tile.bmp", renderer);
     SDL_Texture *snakeTexture = loadSprite("./sprite/body.bmp", renderer);
+    SDL_Texture *appleTexture = loadSprite("./sprite/apple.bmp", renderer);
 
     while(!quit)
     {
         // Logics
+        newApple(apple);
 
         // Events
         SDL_WaitEventTimeout(&event, 250);
@@ -50,6 +50,9 @@ int main(int argc, char** argv){
         if(renderSnake(renderer, snakeTexture, snake) != 0)
             goto Quit;
 
+        if(renderApple(renderer, appleTexture, apple) != 0)
+            goto Quit;
+
         SDL_RenderPresent(renderer);
     }
 
@@ -57,6 +60,12 @@ int main(int argc, char** argv){
     Quit:
     if(snake != NULL)
         destroySnake(snake);
+    if(apple != NULL)
+        destroyApple(apple);
+    if(appleTexture != NULL)
+        SDL_DestroyTexture(appleTexture);
+    if(snakeTexture != NULL)
+        SDL_DestroyTexture(snakeTexture);
     if(bgTexture != NULL)
         SDL_DestroyTexture(bgTexture);
     if(renderer != NULL)

@@ -21,8 +21,8 @@ Snake *initSnake()
 
     node->next = NULL;
     node->previous = NULL;
-    node->x = 250;
-    node->y = 250;
+    node->x = 225;
+    node->y = 0;
     node->direction = s;
 
     snake->head = node;

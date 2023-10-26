@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "../include/snake.h"
+#include "../include/apple.h"
 #include "../include/render.h"
 #include "../include/texture.h"
 
@@ -94,6 +95,28 @@ int renderSnake(SDL_Renderer *renderer, SDL_Texture *texture, Snake *snake)
             fprintf(stderr, "[ERROR] SDL_RenderCopy: %s", SDL_GetError());
             return -1;
         }
+    }
+
+    return 0;
+}
+
+int renderApple(SDL_Renderer *renderer, SDL_Texture *texture, Apple *apple)
+{
+    SDL_Rect dst = {0, 0, 0, 0};
+
+    if(SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h) != 0)
+    {
+        fprintf(stderr, "[ERROR] SDL_QueryTexture: %s", SDL_GetError());
+        return -1;
+    }
+
+    dst.x = apple->x;
+    dst.y = apple->y;
+    
+    if(SDL_RenderCopy(renderer, texture, NULL, &dst) != 0)
+    {
+        fprintf(stderr, "[ERROR] SDL_RenderCopy: %s", SDL_GetError());
+        return -1;
     }
 
     return 0;
