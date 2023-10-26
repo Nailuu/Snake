@@ -5,29 +5,31 @@
 
 Snake *initSnake()
 {
-    Snake *snake = malloc(sizeof(snake));
+    Snake *snake = (Snake*)malloc(1 * sizeof(Snake));
     if(snake == NULL)
     {
         fprintf(stderr, "[ERROR] Initializing Snake Struct");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
-    SnakeNode *head = malloc(sizeof(head));
-    if(head == NULL)
+    SnakeNode *node = (SnakeNode*)malloc(1 * sizeof(SnakeNode));
+    if(node == NULL)
     {
         fprintf(stderr, "[ERROR] Initializing Snake Head");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
-    head->next = NULL;
-    head->previous = NULL;
-    head->x = 250;
-    head->y = 0;
-    head->direction = SOUTH;
+    node->next = NULL;
+    node->previous = NULL;
+    node->x = 250;
+    node->y = 250;
+    node->direction = s;
 
-    snake->head = head;
-    snake->tail = head;
+    snake->head = node;
+    snake->tail = node;
     snake->length = 1;
+
+    return snake;
 }
 
 void destroySnake(Snake *snake)
@@ -52,7 +54,8 @@ void destroySnake(Snake *snake)
 
 int growSnake(Snake *snake)
 {
-    SnakeNode *tail = malloc(sizeof(tail));
+
+    SnakeNode *tail = (SnakeNode*)malloc(1 * sizeof(SnakeNode));
     if(tail == NULL)
     {
         fprintf(stderr, "[ERROR] Initializing Snake Tail");
@@ -62,8 +65,8 @@ int growSnake(Snake *snake)
     tail->direction = snake->tail->direction;
     tail->next = NULL;
     tail->previous = snake->tail;
-    tail->x = 0; // write function that calculate new tail coords based on old tail (+25 / -25)
-    tail-> y = 0; // write function that calculate new tail coords based on old tail (+25 / -25)
+    tail->x = tail->previous->x; // write function that calculate new tail coords based on old tail (+25 / -25)
+    tail-> y = tail->previous->y - 25; // write function that calculate new tail coords based on old tail (+25 / -25)
     snake->tail->next = tail;
     snake->tail = tail;
     snake->length++;

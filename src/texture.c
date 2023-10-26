@@ -6,7 +6,7 @@
 SDL_Texture *loadSprite(char *path, SDL_Renderer *renderer)
 {
     SDL_Surface *surface = NULL;
-    SDL_Texture *texture = NULL;
+    SDL_Texture *texture, *tmp = NULL;
 
     surface = SDL_LoadBMP(path);
     if(surface == NULL)
@@ -15,14 +15,25 @@ SDL_Texture *loadSprite(char *path, SDL_Renderer *renderer)
         return NULL;
     }
     
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
+    tmp = SDL_CreateTextureFromSurface(renderer, surface);
+    if(tmp == NULL)
+    {
+        fprintf(stderr, "[ERROR] SDL_CreateTextureFromSurface: %s", SDL_GetError());
+        return NULL;
+    }
+
+    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, surface->w, surface->h);
     if(texture == NULL)
     {
         fprintf(stderr, "[ERROR] SDL_CreateTextureFromSurface: %s", SDL_GetError());
         return NULL;
     }
 
+    SDL_SetRenderTarget(renderer, texture);
+    SDL_RenderCopy(renderer, tmp, NULL, NULL);
+    SDL_DestroyTexture(tmp);
     SDL_FreeSurface(surface);
+    SDL_SetRenderTarget(renderer, NULL);
     return texture;
 }
 

@@ -1,32 +1,26 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-typedef enum DIRECTION DIRECTION;
-enum DIRECTION
+typedef enum
 {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST
-};
+    n, s, e, w
+} Direction;
 
-typedef struct SnakeNode SnakeNode;
-struct SnakeNode
+typedef struct SnakeNode
 {
     int x;
     int y;
-    DIRECTION direction;
-    SnakeNode *next;
-    SnakeNode *previous;
-};
+    Direction direction;
+    struct SnakeNode *next;
+    struct SnakeNode *previous;
+} SnakeNode;
 
-typedef struct Snake Snake;
-struct Snake
+typedef struct Snake
 {
     SnakeNode *head;
     SnakeNode *tail;
     int length;
-};
+} Snake;
 
 Snake *initSnake();
 void destroySnake(Snake *snake);
