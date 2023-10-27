@@ -24,6 +24,14 @@ typedef struct Snake
 
 Snake *initSnake();
 void destroySnake(Snake *snake);
+int getNewTailX(SnakeNode *tail, Direction direction);
+int getNewTailY(SnakeNode *tail, Direction direction);
 int growSnake(Snake *snake);
+int isSnakeHere(int x, int y, Snake *snake);
+void updateSnakeDirection(Snake *snake);
+void updateDirection(Snake *snake, Direction newDirection);
+int getUpdateSnakeNodeX(SnakeNode *node, Direction direction);
+int getUpdateSnakeNodeY(SnakeNode *node, Direction direction);
+void updateSnake(Snake *snake);
 
 #endif

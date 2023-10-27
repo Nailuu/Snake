@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "../include/snake.h"
 #include "../include/apple.h"
 
-Apple *initApple()
+Apple *initApple(Snake *snake)
 {
     Apple *apple = (Apple*)malloc(1 * sizeof(Apple));
     if(apple == NULL)
@@ -14,8 +15,13 @@ Apple *initApple()
     }
 
     srand(time(NULL));
-    apple->x = (rand() % 20) * 25;
-    apple->y = (rand() % 20) * 25;
+
+    // Avoid apple from spawning on the snake
+    do {
+        apple->x = (rand() % 20) * 25;
+        apple->y = (rand() % 20) * 25;
+    } while(isSnakeHere(apple->x, apple->y, snake) != 0);
+    
     printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
 
     return apple;
@@ -26,10 +32,16 @@ void destroyApple(Apple *apple)
     free(apple);
 }
 
-void newApple(Apple *apple)
+// Create function to check if apple is not on the snake
+void newApple(Apple *apple, Snake *snake)
 {
     srand(time(NULL));
-    apple->x = (rand() % 20) * 25;
-    apple->y = (rand() % 20) * 25;
+
+    // Avoid apple from spawning on the snake
+    do {
+        apple->x = (rand() % 20) * 25;
+        apple->y = (rand() % 20) * 25;
+    } while(isSnakeHere(apple->x, apple->y, snake) != 0);
+
     printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
 }

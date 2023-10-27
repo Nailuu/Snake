@@ -7,8 +7,8 @@ typedef struct Apple
     int y;
 } Apple;
 
-Apple *initApple();
+Apple *initApple(Snake *snake);
 void destroyApple(Apple *apple);
-void newApple(Apple *apple);
+void newApple(Apple *apple, Snake *snake);
 
 #endif

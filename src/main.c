@@ -9,8 +9,11 @@
 
 #define WIDTH 500 
 #define HEIGHT 500
+#define FPS 5
 
 int main(int argc, char** argv){
+    int lastUpdate = SDL_GetTicks();
+
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     SDL_bool quit = SDL_FALSE;
@@ -22,25 +25,54 @@ int main(int argc, char** argv){
     setIcon(window, getIcon("./sprite/icon2.bmp"));
 
     Snake *snake = initSnake();
-    Apple *apple = initApple(WIDTH, HEIGHT);
+    Apple *apple = initApple(snake);
+    growSnake(snake);
+    growSnake(snake);
+    growSnake(snake);
+    growSnake(snake);
+    growSnake(snake);
 
     SDL_Texture *bgTexture = loadSprite("./sprite/tile.bmp", renderer);
-    SDL_Texture *snakeTexture = loadSprite("./sprite/body.bmp", renderer);
+    SDL_Texture *snakeTexture = loadSprite("./sprite/snake.bmp", renderer);
     SDL_Texture *appleTexture = loadSprite("./sprite/apple.bmp", renderer);
 
     while(!quit)
     {
-        // Logics
-        newApple(apple);
-
         // Events
-        SDL_WaitEventTimeout(&event, 250);
+        SDL_PollEvent(&event);
         if(event.type == SDL_QUIT)
         {
             printf("Closed after Quit Event");
             quit = SDL_TRUE;
             goto Quit;
-        } 
+        } else if(event.type == SDL_KEYDOWN)
+        {
+            if(event.key.keysym.scancode == SDL_SCANCODE_A)
+            {
+                updateDirection(snake, w);
+            }
+            else if(event.key.keysym.scancode == SDL_SCANCODE_D)
+            {
+                updateDirection(snake, e);
+            }
+            else if(event.key.keysym.scancode == SDL_SCANCODE_W)
+            {
+                updateDirection(snake, n);
+            }
+            else if(event.key.keysym.scancode == SDL_SCANCODE_S)
+            {
+                updateDirection(snake, s);
+            }
+            
+        }
+
+        // Logics
+        int current = SDL_GetTicks();
+        if((current - lastUpdate) > 1000 / FPS)
+        {
+            updateSnake(snake);
+            lastUpdate = current;
+        }
     
         // Render
         SDL_RenderClear(renderer);
@@ -54,6 +86,11 @@ int main(int argc, char** argv){
             goto Quit;
 
         SDL_RenderPresent(renderer);
+
+        // int end = SDL_GetPerformanceCounter();
+        // float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
+
+        // SDL_Delay(floor(200.000f - elapsedMS));
     }
 
 

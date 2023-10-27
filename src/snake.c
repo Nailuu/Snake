@@ -22,7 +22,7 @@ Snake *initSnake()
     node->next = NULL;
     node->previous = NULL;
     node->x = 225;
-    node->y = 0;
+    node->y = 300;
     node->direction = s;
 
     snake->head = node;
@@ -52,24 +52,122 @@ void destroySnake(Snake *snake)
     free(snake);
 }
 
+int getNewTailX(SnakeNode *tail, Direction direction)
+{
+    switch(direction)
+    {
+        case e:
+            return (tail->x - 25);
+        case w:
+            return (tail->x + 25);
+        default:
+            return tail->x;
+    }
+}
+
+int getNewTailY(SnakeNode *tail, Direction direction)
+{
+    switch(direction)
+    {
+        case n:
+            return (tail->y + 25);
+        case s:
+            return (tail->y - 25);
+        default:
+            return tail->y;
+    }
+}
+
 int growSnake(Snake *snake)
 {
 
-    SnakeNode *tail = (SnakeNode*)malloc(1 * sizeof(SnakeNode));
-    if(tail == NULL)
+    SnakeNode *newTail = (SnakeNode*)malloc(1 * sizeof(SnakeNode));
+    if(newTail == NULL)
     {
         fprintf(stderr, "[ERROR] Initializing Snake Tail");
         return -1;
     }
 
-    tail->direction = snake->tail->direction;
-    tail->next = NULL;
-    tail->previous = snake->tail;
-    tail->x = tail->previous->x; // write function that calculate new tail coords based on old tail (+25 / -25)
-    tail-> y = tail->previous->y - 25; // write function that calculate new tail coords based on old tail (+25 / -25)
-    snake->tail->next = tail;
-    snake->tail = tail;
+    newTail->direction = snake->tail->direction;
+    newTail->next = NULL;
+    newTail->previous = snake->tail;
+    newTail->x = getNewTailX(newTail->previous, newTail->previous->direction);
+    newTail->y = getNewTailY(newTail->previous, newTail->previous->direction);
+    snake->tail->next = newTail;
+    snake->tail = newTail;
     snake->length++;
 
     return 0;
+}
+
+int isSnakeHere(int x, int y, Snake *snake)
+{
+    SnakeNode *part = snake->head;
+    while(part != NULL)
+    {
+        if(part->x == x && part->y == y)
+        {
+            return 1;
+        }
+        part = part->next;
+    }
+    
+    return 0;
+}
+
+void updateSnakeDirection(Snake *snake)
+{
+    SnakeNode *part = snake->tail;
+    while(part != NULL)
+    {
+        if(part->previous != NULL)
+        {
+            part->direction = part->previous->direction;
+        }
+        part = part->previous;
+    }
+}
+
+void updateDirection(Snake *snake, Direction newDirection)
+{
+    snake->head->direction = newDirection;
+}
+
+int getUpdateSnakeNodeX(SnakeNode *node, Direction direction)
+{
+    switch(direction)
+    {
+        case e:
+            return (node->x + 25);
+        case w:
+            return (node->x - 25);
+        default:
+            return node->x;
+    }
+}
+
+int getUpdateSnakeNodeY(SnakeNode *node, Direction direction)
+{
+    switch(direction)
+    {
+        case n:
+            return (node->y - 25);
+        case s:
+            return (node->y + 25);
+        default:
+            return node->y;
+    }
+}
+
+void updateSnake(Snake *snake)
+{
+    SnakeNode *part = snake->head;
+    while(part != NULL)
+    {
+        part->x = getUpdateSnakeNodeX(part, part->direction);
+        part->y = getUpdateSnakeNodeY(part, part->direction);
+        part = part->next;
+    }
+
+    updateSnakeDirection(snake);
 }
