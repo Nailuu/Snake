@@ -45,3 +45,12 @@ void newApple(Apple *apple, Snake *snake)
 
     printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
 }
+
+void isAppleEaten(Apple *apple, Snake *snake)
+{
+    if(snake->head->x == apple->x && snake->head->y == apple->y)
+    {
+        growSnake(snake);
+        newApple(apple, snake);
+    }
+}

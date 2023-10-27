@@ -159,9 +159,17 @@ int getUpdateSnakeNodeY(SnakeNode *node, Direction direction)
     }
 }
 
-void updateSnake(Snake *snake)
+void updateSnake(Snake *snake, int *gameover)
 {
     SnakeNode *part = snake->head;
+
+    // Check for collision
+    if(getUpdateSnakeNodeX(part, part->direction) < 0 || getUpdateSnakeNodeX(part, part->direction) > 475 || getUpdateSnakeNodeY(part, part->direction) < 0 || getUpdateSnakeNodeY(part, part->direction) > 475 || isSnakeHere(getUpdateSnakeNodeX(part, part->direction), getUpdateSnakeNodeY(part, part->direction), snake) == 1)
+    {
+        *gameover = 1;
+        return;
+    }
+
     while(part != NULL)
     {
         part->x = getUpdateSnakeNodeX(part, part->direction);

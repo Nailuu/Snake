@@ -32,6 +32,6 @@ void updateSnakeDirection(Snake *snake);
 void updateDirection(Snake *snake, Direction newDirection);
 int getUpdateSnakeNodeX(SnakeNode *node, Direction direction);
 int getUpdateSnakeNodeY(SnakeNode *node, Direction direction);
-void updateSnake(Snake *snake);
+void updateSnake(Snake *snake, int *gameover);
 
 #endif
