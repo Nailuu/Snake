@@ -138,9 +138,11 @@ int getUpdateSnakeNodeX(SnakeNode *node, Direction direction)
     switch(direction)
     {
         case e:
-            return (node->x + 25);
+            // Teleport to opposite if exiting the game grid
+            return (node->x + 25) > 475 ? 0 : (node->x + 25);
         case w:
-            return (node->x - 25);
+            // Teleport to opposite if exiting the game grid
+            return (node->x - 25) < 0 ? 475 : (node->x - 25);
         default:
             return node->x;
     }
@@ -151,9 +153,11 @@ int getUpdateSnakeNodeY(SnakeNode *node, Direction direction)
     switch(direction)
     {
         case n:
-            return (node->y - 25);
+            // Teleport to opposite if exiting the game grid
+            return (node->y - 25) < 0 ? 475 : (node->y - 25); 
         case s:
-            return (node->y + 25);
+            // Teleport to opposite if exiting the game grid
+            return (node->y + 25) > 475 ? 0 : (node->y + 25); 
         default:
             return node->y;
     }
@@ -163,8 +167,8 @@ void updateSnake(Snake *snake, int *gameover)
 {
     SnakeNode *part = snake->head;
 
-    // Check for collision
-    if(getUpdateSnakeNodeX(part, part->direction) < 0 || getUpdateSnakeNodeX(part, part->direction) > 475 || getUpdateSnakeNodeY(part, part->direction) < 0 || getUpdateSnakeNodeY(part, part->direction) > 475 || isSnakeHere(getUpdateSnakeNodeX(part, part->direction), getUpdateSnakeNodeY(part, part->direction), snake) == 1)
+    // Check for collision with itself
+    if(isSnakeHere(getUpdateSnakeNodeX(part, part->direction), getUpdateSnakeNodeY(part, part->direction), snake) == 1)
     {
         *gameover = 1;
         return;

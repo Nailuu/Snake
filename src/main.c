@@ -28,9 +28,6 @@ int main(int argc, char** argv){
     Snake *snake = initSnake();
     Apple *apple = initApple(snake);
     growSnake(snake);
-    growSnake(snake);
-    growSnake(snake);
-    growSnake(snake);
 
     SDL_Texture *bgTexture = loadSprite("./sprite/tile.bmp", renderer);
     SDL_Texture *snakeTexture = loadSprite("./sprite/snake.bmp", renderer);
