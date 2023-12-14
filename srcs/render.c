@@ -1,6 +1,9 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "snake.h"
 #include "apple.h"
 #include "render.h"
@@ -119,5 +122,55 @@ int renderApple(SDL_Renderer *renderer, SDL_Texture *texture, Apple *apple)
         return -1;
     }
 
+    return 0;
+}
+
+int renderFont(SDL_Renderer *renderer, TTF_Font *font, char *text, int x, int y)
+{
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *tmp = TTF_RenderText_Solid(font, text, color);
+    SDL_Texture *textImg = SDL_CreateTextureFromSurface(renderer, tmp);
+    SDL_Rect dst = {x, y, tmp->w, tmp->h};
+    SDL_FreeSurface(tmp);
+    if(SDL_RenderCopy(renderer, textImg, NULL, &dst) != 0)
+    {
+        fprintf(stderr, "[ERROR] SDL_RenderCopy: %s", SDL_GetError());
+        return -1;
+    }
+    return 0;
+}
+
+int renderScoreFont(SDL_Renderer *renderer, TTF_Font *font)
+{
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *tmp = TTF_RenderText_Solid(font, "Score:", color);
+    SDL_Texture *textImg = SDL_CreateTextureFromSurface(renderer, tmp);
+    SDL_Rect dst = {15, 465, tmp->w, tmp->h};
+    SDL_FreeSurface(tmp);
+    if(SDL_RenderCopy(renderer, textImg, NULL, &dst) != 0)
+    {
+        fprintf(stderr, "[ERROR] SDL_RenderCopy: %s", SDL_GetError());
+        return -1;
+    }
+    return 0;
+}
+
+int renderScoreFontValue(SDL_Renderer *renderer, TTF_Font *font, int score)
+{
+    int length = floor(log10(abs(score))) + 1;
+    char *str = NULL;
+    str = (char *)malloc(sizeof(char) * (length + 1));
+    str[length] = '\0';
+    SDL_Color color = {51, 153, 255, 255};
+    SDL_Surface *tmp = TTF_RenderText_Solid(font, itoa(score, str, 10), color);
+    free(str);
+    SDL_Texture *textImg = SDL_CreateTextureFromSurface(renderer, tmp);
+    SDL_Rect dst = {100, 465, tmp->w, tmp->h};
+    SDL_FreeSurface(tmp);
+    if(SDL_RenderCopy(renderer, textImg, NULL, &dst) != 0)
+    {
+        fprintf(stderr, "[ERROR] SDL_RenderCopy: %s", SDL_GetError());
+        return -1;
+    }
     return 0;
 }

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "snake.h"
 
-Snake *initSnake()
+Snake *initSnake(int *score)
 {
     Snake *snake = (Snake*)malloc(1 * sizeof(Snake));
     if(snake == NULL)
@@ -28,6 +28,17 @@ Snake *initSnake()
     snake->head = node;
     snake->tail = node;
     snake->length = 1;
+
+    if (growSnake(snake, score) != 0)
+    {
+        destroySnake(snake);
+        return NULL;
+    }
+    if (growSnake(snake, score) != 0)
+    {
+        destroySnake(snake);
+        return NULL;
+    }
 
     return snake;
 }
@@ -78,7 +89,7 @@ int getNewTailY(SnakeNode *tail, Direction direction)
     }
 }
 
-int growSnake(Snake *snake)
+int growSnake(Snake *snake, int *score)
 {
 
     SnakeNode *newTail = (SnakeNode*)malloc(1 * sizeof(SnakeNode));
@@ -87,6 +98,8 @@ int growSnake(Snake *snake)
         fprintf(stderr, "[ERROR] Initializing Snake Tail");
         return -1;
     }
+    
+    *score += 1;
 
     newTail->direction = snake->tail->direction;
     newTail->next = NULL;

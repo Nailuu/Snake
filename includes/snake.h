@@ -22,11 +22,11 @@ typedef struct Snake
     int length;
 } Snake;
 
-Snake *initSnake();
+Snake *initSnake(int *score);
 void destroySnake(Snake *snake);
 int getNewTailX(SnakeNode *tail, Direction direction);
 int getNewTailY(SnakeNode *tail, Direction direction);
-int growSnake(Snake *snake);
+int growSnake(Snake *snake, int *score);
 int isSnakeHere(int x, int y, Snake *snake);
 void updateSnakeDirection(Snake *snake);
 void updateDirection(Snake *snake, Direction newDirection);

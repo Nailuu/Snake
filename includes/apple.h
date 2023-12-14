@@ -10,6 +10,6 @@ typedef struct Apple
 Apple *initApple(Snake *snake);
 void destroyApple(Apple *apple);
 void newApple(Apple *apple, Snake *snake);
-void isAppleEaten(Apple *apple, Snake *snake);
+void isAppleEaten(Apple *apple, Snake *snake, int *score);
 
 #endif

@@ -1,11 +1,13 @@
 #include <crtdbg.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "snake.h"
 #include "apple.h"
 #include "render.h"
 #include "texture.h"
+#include "font.h"
 
 #define WIDTH 500 
 #define HEIGHT 500
@@ -18,18 +20,23 @@ int main(int argc, char *argv[]) {
 
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
+    TTF_Font *font = NULL;
+    TTF_Font *fontScore = NULL;
     SDL_bool quit = SDL_FALSE;
     int gameover = 0;
+    int score = 1;
     SDL_Event event;
 
     if(initWindow(&window, &renderer, WIDTH, HEIGHT) != 0)
         goto Quit;
     
+    font = initFont(50);
+    fontScore = initFont(20);
+    
     setIcon(window, getIcon("./assets/apple.bmp"));
 
-    Snake *snake = initSnake();
+    Snake *snake = initSnake(&score);
     Apple *apple = initApple(snake);
-    growSnake(snake);
 
     SDL_Texture *bgTexture = loadSprite("./assets/tile.bmp", renderer);
     SDL_Texture *snakeTexture = loadSprite("./assets/snake.bmp", renderer);
@@ -68,6 +75,15 @@ int main(int argc, char *argv[]) {
                 if(snake->head->direction != n)
                     updateDirection(snake, s);
             }
+            else if(gameover == 1 && event.key.keysym.scancode == SDL_SCANCODE_R)
+            {
+                gameover = 0;
+                score = 1;
+                destroySnake(snake);
+                destroyApple(apple);
+                snake = initSnake(&score);
+                apple = initApple(snake);
+            }
             
         }
 
@@ -77,7 +93,7 @@ int main(int argc, char *argv[]) {
         {
             // Logics
             updateSnake(snake, &gameover);
-            isAppleEaten(apple, snake);
+            isAppleEaten(apple, snake, &score);
             lastUpdate = current;
         }
     
@@ -98,11 +114,27 @@ int main(int argc, char *argv[]) {
         if(renderApple(renderer, appleTexture, apple) != 0)
             goto Quit;
 
+        if(gameover == 1)
+        {
+            if(renderFont(renderer, font, "GAME OVER!", 75, 175) != 0)
+                goto Quit;
+            if(renderFont(renderer, fontScore, "Press R key to restart", 100, 250) != 0)
+                goto Quit;
+        }
+
+        if(renderScoreFont(renderer, fontScore) != 0)
+            goto Quit;
+
+        if(renderScoreFontValue(renderer, fontScore, score) != 0)
+            goto Quit;
+
         SDL_RenderPresent(renderer);
     }
 
 
     Quit:
+    TTF_CloseFont(font);
+    TTF_CloseFont(fontScore);
     if(snake != NULL)
         destroySnake(snake);
     if(apple != NULL)
@@ -120,5 +152,6 @@ int main(int argc, char *argv[]) {
     if(window != NULL)
         SDL_DestroyWindow(window);
     SDL_Quit();
-    exit(EXIT_FAILURE);
+    TTF_Quit();
+    return 0;
 }
