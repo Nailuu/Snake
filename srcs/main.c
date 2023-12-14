@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if(initWindow(&window, &renderer, WIDTH, HEIGHT) != 0)
         goto Quit;
     
-    setIcon(window, getIcon("./assets/icon2.bmp"));
+    setIcon(window, getIcon("./assets/apple.bmp"));
 
     Snake *snake = initSnake();
     Apple *apple = initApple(snake);
