@@ -2,16 +2,18 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "../include/snake.h"
-#include "../include/apple.h"
-#include "../include/render.h"
-#include "../include/texture.h"
+#include "snake.h"
+#include "apple.h"
+#include "render.h"
+#include "texture.h"
 
 #define WIDTH 500 
 #define HEIGHT 500
 #define FPS 8
 
-int main(int argc, char** argv){
+int main(int argc, char *argv[]) {
+    argc += 0;
+    argv += 0;
     int lastUpdate = SDL_GetTicks();
 
     SDL_Window *window = NULL;
@@ -23,16 +25,16 @@ int main(int argc, char** argv){
     if(initWindow(&window, &renderer, WIDTH, HEIGHT) != 0)
         goto Quit;
     
-    setIcon(window, getIcon("./sprite/icon2.bmp"));
+    setIcon(window, getIcon("./assets/icon2.bmp"));
 
     Snake *snake = initSnake();
     Apple *apple = initApple(snake);
     growSnake(snake);
 
-    SDL_Texture *bgTexture = loadSprite("./sprite/tile.bmp", renderer);
-    SDL_Texture *snakeTexture = loadSprite("./sprite/snake.bmp", renderer);
-    SDL_Texture *deadSnakeTexture = loadSprite("./sprite/dead_snake.bmp", renderer);
-    SDL_Texture *appleTexture = loadSprite("./sprite/apple.bmp", renderer);
+    SDL_Texture *bgTexture = loadSprite("./assets/tile.bmp", renderer);
+    SDL_Texture *snakeTexture = loadSprite("./assets/snake.bmp", renderer);
+    SDL_Texture *deadSnakeTexture = loadSprite("./assets/dead_snake.bmp", renderer);
+    SDL_Texture *appleTexture = loadSprite("./assets/apple.bmp", renderer);
 
     while(!quit)
     {

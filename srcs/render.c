@@ -1,10 +1,10 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "../include/snake.h"
-#include "../include/apple.h"
-#include "../include/render.h"
-#include "../include/texture.h"
+#include "snake.h"
+#include "apple.h"
+#include "render.h"
+#include "texture.h"
 
 int initWindow(SDL_Window **window, SDL_Renderer **renderer, int width, int height)
 {

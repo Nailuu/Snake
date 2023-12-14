@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "../include/texture.h"
+#include "texture.h"
 
 SDL_Texture *loadSprite(char *path, SDL_Renderer *renderer)
 {

@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../include/snake.h"
-#include "../include/apple.h"
+#include "snake.h"
+#include "apple.h"
 
 Apple *initApple(Snake *snake)
 {
@@ -22,7 +22,7 @@ Apple *initApple(Snake *snake)
         apple->y = (rand() % 20) * 25;
     } while(isSnakeHere(apple->x, apple->y, snake) != 0);
     
-    printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
+    //printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
 
     return apple;
 }
@@ -43,7 +43,7 @@ void newApple(Apple *apple, Snake *snake)
         apple->y = (rand() % 20) * 25;
     } while(isSnakeHere(apple->x, apple->y, snake) != 0);
 
-    printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
+    //printf("[LOG] Apple has appeared in x: %d / y: %d\n", apple->x, apple->y);
 }
 
 void isAppleEaten(Apple *apple, Snake *snake)

@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/snake.h"
+#include "snake.h"
 
 Snake *initSnake()
 {
